@@ -3,33 +3,41 @@ import React, {useState} from "react";
 import { Form } from "semantic-ui-react";
 
 function PokemonForm({addPokemon}) {
-  
-  const [formData, setFormData]= useState({
+  const [formData, setFormData] = useState({
     name:"",
-    hp: "",
-    frontUrl: "",
-    backUrl: ""
+    hp:"",
+    frontUrl:"",
+    backUrl:""
   })
-  
+
   const handleChange = (e) => {
-    setFormData(
-      {...formData, 
-        [e.target.name]: e.target.value
-       })
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    })
   }
-    const handleSubmit = (e) => {
-      e.preventDefault()
-      let newPokemon = {
-        name: formData.name,
-        hp: formData.hp,
-        sprites: {
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    const newPokemon = 
+    { name: formData.name,
+      hp: formData.hp,
+      sprites: {
         front: formData.frontUrl,
         back: formData.backUrl
       }
-      }
-      addPokemon(newPokemon)
     }
+    fetch('http://localhost:3001/pokemon',
+    {
+      method: "POST",
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(newPokemon)})
+    .then(res => res.json())
+    .then(data => addPokemon(data))
+    //addPokemon(newPokemon)
+  }
 
+  
   return (
     <div>
       <h3>Add a Pokemon!</h3>
@@ -37,8 +45,8 @@ function PokemonForm({addPokemon}) {
         onSubmit={handleSubmit}
       >
         <Form.Group widths="equal">
-          <Form.Input fluid label="Name" placeholder="Name" name="name" value={formData.name} onChange={handleChange}/>
-          <Form.Input fluid label="hp" placeholder="hp" name="hp" value={formData.hp} onChange={handleChange} />
+          <Form.Input fluid label="Name" placeholder="Name" name="name" value= {formData.name} onChange={handleChange} />
+          <Form.Input fluid label="hp" placeholder="hp" name="hp" value= {formData.hp} onChange={handleChange}/>
           <Form.Input
             fluid
             label="Front Image URL"
@@ -62,4 +70,4 @@ function PokemonForm({addPokemon}) {
   );
 }
 
-export default PokemonForm
+export default PokemonForm;

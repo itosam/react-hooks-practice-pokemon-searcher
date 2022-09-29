@@ -2,13 +2,13 @@ import React, {useState, useEffect} from "react";
 import PokemonCollection from "./PokemonCollection";
 import PokemonForm from "./PokemonForm";
 import Search from "./Search";
-import { Container } from "semantic-ui-react";
+import { Container, Portal } from "semantic-ui-react";
 
 function PokemonPage() {
-  const [pokemons, setPokemons] =useState([])
+  const [pokemons, setPokemons] = useState([])
   const [searchQuery, setSearchQuery] = useState("")
 
-  useEffect(()=> {
+  useEffect(()=>{
     fetch('http://localhost:3001/pokemon')
     .then(res => res.json())
     .then(data => {
@@ -21,14 +21,13 @@ function PokemonPage() {
     setSearchQuery(e.target.value)
   }
 
-  const pokemonToDisplay=  pokemons.filter(pokemon => pokemon.name.toLowerCase().includes(searchQuery.toLowerCase()))
-  // const pokemonToDisplay= pokemons.filter(pokemon => pokemon.name.toLowerCase().includes(searchQuery.toLowerCase()))
+  const pokemonToDisplay= pokemons.filter(pokemon => pokemon.name.toLowerCase().includes(searchQuery.toLowerCase()))
 
   const addPokemon = (newPokemon) => {
-    setPokemons([
-      newPokemon,
-      ...pokemons
-    ])
+    setPokemons(
+      [...pokemons, 
+        newPokemon]
+        )
   }
 
   return (
@@ -37,9 +36,9 @@ function PokemonPage() {
       <br />
       <PokemonForm addPokemon={addPokemon} />
       <br />
-      <Search searchQuery={searchQuery} onSearch={handleSearch}/>
+      <Search seachQuery={searchQuery} onSearch={handleSearch}/>
       <br />
-      <PokemonCollection pokemons={pokemonToDisplay}/>
+      <PokemonCollection pokemons={pokemonToDisplay} />
     </Container>
   );
 }

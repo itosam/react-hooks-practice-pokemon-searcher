@@ -3,16 +3,15 @@ import { Card } from "semantic-ui-react";
 
 function PokemonCard({name, hp, sprites}) {
   const [showFront, setShowFront] = useState(true)
-
-  const handleClick = ()=> {
-    setShowFront(showFront => !showFront)
-  }
   
+  const handleShow = ()=>(
+    setShowFront(showFront => !showFront)
+  ) 
   return (
-    <Card onClick= {handleClick}>
+    <Card onClick={handleShow}>
       <div>
         <div className="image">
-          <img src={showFront ? sprites.front : sprites.back} alt="oh no!" />
+          <img alt="oh no!" src={showFront ? sprites.front : sprites.back } />
         </div>
         <div className="content">
           <div className="header">{name}</div>
